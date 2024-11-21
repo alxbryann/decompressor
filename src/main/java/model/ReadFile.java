@@ -12,12 +12,14 @@ public class ReadFile {
     private final ArrayList<Integer> byteData;
     private int treeSize;
     private String outputName;
+    private String outputPath;
 
     public ReadFile(String path) {
         this.path = path;
+        this.outputPath = "";
         this.byteData = new ArrayList<>();
         this.fileByteByByte = new ArrayList<>();
-        outputName = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
+        outputName = path.substring(path.lastIndexOf("\\") + 1, path.lastIndexOf("."));
     }
 
     @SuppressWarnings({"unchecked", "resource", "CatchMayIgnoreException"})
@@ -64,13 +66,18 @@ public class ReadFile {
         return fileByteByByte.toString();
     }
 
-    public void createNewFile(byte[] data) {
+    public String createNewFile(byte[] data) {
         try (FileOutputStream outputStream = new FileOutputStream("src/main/resources/decompressed/" + outputName)) {
+            outputPath = "src/main/resources/decompressed/" + outputName;
             outputStream.write(data);
-            System.out.println("Created at: src/main/resources/decompressed/" + outputName);
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
         }
+        return "Created at src/main/resources/decompressed/" + outputName;
+    }
+
+    public String getOutputPath() {
+        return outputPath;
     }
 
 }
